@@ -3,11 +3,11 @@
 #include <DHT.h>
 
 #define SENSOR_HUMEDAD_ESTE 33
-#define SENSOR_HUMEDAD_OESTE 25
+#define SENSOR_HUMEDAD_OESTE 35
 #define SENSOR_TEMP 26
 #define LED_PIN 15
 #define LED_VERDE 34
-#define LED_AZUL 35
+#define LED_AZUL 22
 #define LED_ROJO 32
 
 #define DHTTYPE DHT11
@@ -16,7 +16,7 @@ DHT dht(SENSOR_TEMP, DHTTYPE);
 const char* ssid = "skaotico honor";
 const char* password = "123456789";
 
-const char* serverUrl = "http://192.168.107.109:3000/humedad";
+const char* serverUrl = "http://192.168.106.109:3000/sector/Sector%20Norte/arboles/Manzano/sensores";
 
 int soilDry = 3800;
 int soilWet = 800;
@@ -101,9 +101,22 @@ void sendPostRequest(int humidityEste, int humidityOeste) {
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
     http.begin(serverUrl);
+    http.addHeader("accept", "*/*");
     http.addHeader("Content-Type", "application/json");
-    String jsonData = "{\"humedadEste\": " + String(humidityEste) + 
-                      ", \"humedadOeste\": " + String(humidityOeste) + "}";
+
+    // Obtener la fecha actual en formato ISO 8601
+    String fecha = getCurrentDate();
+    
+    // Crear el JSON para el cuerpo de la solicitud
+    String jsonData = "[{"
+                      "\"nombre_sensor\": \"Este\", "
+                      "\"humedad\": " + String(humidityEste) + ", "
+                      "\"fecha\": \"" + fecha + "\"}, "
+                      "{"
+                      "\"nombre_sensor\": \"Oeste\", "
+                      "\"humedad\": " + String(humidityOeste) + ", "
+                      "\"fecha\": \"" + fecha + "\"}]";
+
     int httpCode = http.POST(jsonData);
     if (httpCode > 0) {
       digitalWrite(LED_VERDE, HIGH);
@@ -127,4 +140,9 @@ void sendPostRequest(int humidityEste, int humidityOeste) {
   } else {
     Serial.println("No conectado a WiFi");
   }
+}
+
+String getCurrentDate() {
+    // solo a modo de prueba, esto debe ser tomado desde el server o bd
+  return "2025-01-22T00:00:00.000Z";
 }
