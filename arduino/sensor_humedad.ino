@@ -3,11 +3,11 @@
 #include <DHT.h>
 
 #define SENSOR_HUMEDAD_ESTE 33
-#define SENSOR_HUMEDAD_OESTE 25
+#define SENSOR_HUMEDAD_OESTE 35
 #define SENSOR_TEMP 26
 #define LED_PIN 15
 #define LED_VERDE 34
-#define LED_AZUL 35
+#define LED_AZUL 22
 #define LED_ROJO 32
 
 #define DHTTYPE DHT11
