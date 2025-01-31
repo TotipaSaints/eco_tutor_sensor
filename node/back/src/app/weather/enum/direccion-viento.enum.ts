@@ -1,0 +1,17 @@
+export enum DireccionViento {
+  Norte = 0,
+  NorteNoreste = 22.5,
+  Noreste = 45,
+  EsteNoreste = 67.5,
+  Este = 90,
+  EsteSureste = 112.5,
+  Sureste = 135,
+  SurSureste = 157.5,
+  Sur = 180,
+  SurOeste = 202.5,
+  OesteSureste = 225,
+  Oeste = 270,
+  OesteNoroeste = 292.5,
+  Noroeste = 315,
+  NorteNoroeste = 337.5,
+}
